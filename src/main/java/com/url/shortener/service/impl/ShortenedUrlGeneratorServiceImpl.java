@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service;
 public class ShortenedUrlGeneratorServiceImpl implements ShortenedUrlGeneratorService {
     @Override
     public String generateUrl(String baseUrl, String shortCode) {
-        String shortenedUrl = baseUrl.concat("/").concat(shortCode);
-        System.out.println(shortenedUrl);
+        String shortenedUrl;
+        if (baseUrl.endsWith("/")) {
+            shortenedUrl = baseUrl.concat(shortCode);
+        } else {
+            shortenedUrl = baseUrl.concat("/").concat(shortCode);
+        }
         return shortenedUrl;
     }
 }

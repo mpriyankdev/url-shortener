@@ -3,21 +3,28 @@ package com.url.shortener.util;
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
 import com.url.shortener.service.UrlHandlerService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.nio.charset.Charset;
 
+@Slf4j
 @Component
+@DependsOnDatabaseInitialization
 public class ShortCodeExistenceCheckUtil {
 
     @Value("${url.shortener.short-code-check.offset:1000}")
     private int offset;
 
-    @Autowired
     private UrlHandlerService urlHandlerService;
+
+    public ShortCodeExistenceCheckUtil(UrlHandlerService urlHandlerService) {
+        this.urlHandlerService = urlHandlerService;
+    }
 
     private BloomFilter<String> filter;
 
@@ -28,6 +35,7 @@ public class ShortCodeExistenceCheckUtil {
                 Funnels.stringFunnel(Charset.defaultCharset()), urlHandlerService.countShortCodes() + offset);
 
         urlHandlerService.getAllShortUrlInfo().stream().forEach(ele -> filter.put(ele.getShortCode()));
+        log.info("Initialised Bloom-Filter to check membership of shortCodes");
 
     }
 
@@ -36,7 +44,8 @@ public class ShortCodeExistenceCheckUtil {
     }
 
     public Boolean checkIfShortCodeExists(String shortCode) {
-        boolean b = filter.mightContain(shortCode);
-        return b;
+        boolean isPresent = filter.mightContain(shortCode);
+        log.info("ShortCodeExistenceCheckUtil.checkIfShortCodeExists::isPresent={}", isPresent);
+        return isPresent;
     }
 }
