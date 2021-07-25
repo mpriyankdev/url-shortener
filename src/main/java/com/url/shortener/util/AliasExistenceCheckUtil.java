@@ -45,4 +45,8 @@ public class AliasExistenceCheckUtil {
         log.info("AliasExistenceCheckUtil.checkIfAliasExists::isPresent={}", isPresent);
         return isPresent;
     }
+
+    public void setAliasHandlerService(AliasHandlerService aliasHandlerService) {
+        this.aliasHandlerService = aliasHandlerService;
+    }
 }

@@ -20,6 +20,7 @@ public class ShortCodeExistenceCheckUtil {
     @Value("${url.shortener.short-code-check.offset:1000}")
     private int offset;
 
+    @Autowired
     private UrlHandlerService urlHandlerService;
 
     public ShortCodeExistenceCheckUtil(UrlHandlerService urlHandlerService) {
@@ -47,5 +48,9 @@ public class ShortCodeExistenceCheckUtil {
         boolean isPresent = filter.mightContain(shortCode);
         log.info("ShortCodeExistenceCheckUtil.checkIfShortCodeExists::isPresent={}", isPresent);
         return isPresent;
+    }
+
+    public void setUrlHandlerService(UrlHandlerService urlHandlerService) {
+        this.urlHandlerService = urlHandlerService;
     }
 }

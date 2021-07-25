@@ -36,7 +36,7 @@ public class UrlHandlerController {
         this.shortenedUrlGeneratorService = shortenedUrlGeneratorService;
     }
 
-    @PostMapping(value = "/shortenedUrl")
+    @PostMapping(value = "/shortenUrl")
     public ResponseEntity<UrlShorteningInfoResponse> createShortenUrl(HttpServletRequest request, @RequestBody UrlShorteningInfoRequest urlShorteningInfoRequest) {
 
         final String alias = urlShorteningInfoRequest.getAlias();
