@@ -18,3 +18,11 @@ spring:
     console:
       enabled: true
 
+url:
+  shortener:
+    short-code:
+      length: 6
+    alias-check:
+      offset: 500
+    short-code-check:
+      offset: 500

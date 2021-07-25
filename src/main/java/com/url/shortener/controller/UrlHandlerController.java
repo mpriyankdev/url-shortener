@@ -45,13 +45,17 @@ public class UrlHandlerController {
 
         final String alias = urlShorteningInfoRequest.getAlias();
 
-        final boolean b = (alias != null) ? aliasExistenceCheckUtil.checkIfAliasExists(alias) : false; //always check for false using bloom-filter
-
-        if (!b && alias != null) {
-            inflightAliasesHandlerService.addInflightAlias(alias);
+        if (alias != null) {
+            if (!aliasExistenceCheckUtil.checkIfAliasExists(alias)) {
+                aliasExistenceCheckUtil.addAliasToFilter(alias);
+                final AliasEntity savedAliasInfo = aliasHandlerService.saveAlias(aliasHandlerService.mapAlias(urlShorteningInfoRequest));
+                urlShorteningInfoRequest.setAlias(savedAliasInfo.getAlias());
+            } else {
+                return ResponseEntity.status(HttpStatus.IM_USED).build();
+            }
         }
 
-        final AliasEntity savedAliasInfo = aliasHandlerService.saveAlias(aliasHandlerService.mapAlias(urlShorteningInfoRequest));
+
         final ShortUrlInfoEntity savedShortUrlInfo = urlHandlerService.saveUrl(urlHandlerService.mapUrl(urlShorteningInfoRequest));
 
         String baseUrl = request.getRequestURL().toString().replaceAll(request.getRequestURI(), "");
@@ -65,7 +69,7 @@ public class UrlHandlerController {
     }
 
     @GetMapping(value = "/{shortCode}")
-    public ResponseEntity<Void> redirect(HttpServletRequest request, @PathVariable("shortCode") String shortCode) {
+    public ResponseEntity<Void> redirectShortCodeToLongUrl(HttpServletRequest request, @PathVariable("shortCode") String shortCode) {
         System.out.println(shortCode);
         Optional<ShortUrlInfoEntity> urlInfoByShortCode = urlHandlerService.findUrlInfoByShortCode(shortCode);
 

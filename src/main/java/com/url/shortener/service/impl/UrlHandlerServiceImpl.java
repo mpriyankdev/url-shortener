@@ -34,6 +34,11 @@ public class UrlHandlerServiceImpl implements UrlHandlerService {
     }
 
     @Override
+    public long countShortCodes() {
+        return urlHandlerRepository.count();
+    }
+
+    @Override
     public ShortUrlInfoEntity saveUrl(ShortUrlInfoEntity shortUrlInfo) {
         return urlHandlerRepository.save(shortUrlInfo);
     }

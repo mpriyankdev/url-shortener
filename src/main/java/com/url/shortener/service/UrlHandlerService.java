@@ -12,6 +12,8 @@ public interface UrlHandlerService {
 
     Collection<ShortUrlInfoEntity> getAllShortUrlInfo();
 
+    long countShortCodes();
+
     ShortUrlInfoEntity saveUrl(ShortUrlInfoEntity shortUrlInfo);
 
     ShortUrlInfoEntity mapUrl(UrlShorteningInfoRequest request);
