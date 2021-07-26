@@ -2,6 +2,7 @@ package com.url.shortener.controller;
 
 import com.url.shortener.entity.AliasEntity;
 import com.url.shortener.entity.ShortUrlInfoEntity;
+import com.url.shortener.exception.UrlNotProvidedException;
 import com.url.shortener.model.UrlShorteningInfoRequest;
 import com.url.shortener.model.UrlShorteningInfoResponse;
 import com.url.shortener.service.AliasHandlerService;
@@ -38,6 +39,10 @@ public class UrlHandlerController {
 
     @PostMapping(value = "/shortenUrl")
     public ResponseEntity<UrlShorteningInfoResponse> createShortenUrl(HttpServletRequest request, @RequestBody UrlShorteningInfoRequest urlShorteningInfoRequest) {
+
+        if (urlShorteningInfoRequest.getUrl() == null || urlShorteningInfoRequest.getUrl().isEmpty()) {
+            throw new UrlNotProvidedException("Url not provided. Please provide a valid url");
+        }
 
         final String alias = urlShorteningInfoRequest.getAlias();
 

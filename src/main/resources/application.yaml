@@ -26,3 +26,9 @@ url:
       offset: 500
     short-code-check:
       offset: 500
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui
