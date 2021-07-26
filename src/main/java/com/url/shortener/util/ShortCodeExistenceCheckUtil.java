@@ -53,4 +53,8 @@ public class ShortCodeExistenceCheckUtil {
     public void setUrlHandlerService(UrlHandlerService urlHandlerService) {
         this.urlHandlerService = urlHandlerService;
     }
+
+    public void setFilter(BloomFilter<String> filter) {
+        this.filter = filter;
+    }
 }

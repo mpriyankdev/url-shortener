@@ -49,4 +49,8 @@ public class AliasExistenceCheckUtil {
     public void setAliasHandlerService(AliasHandlerService aliasHandlerService) {
         this.aliasHandlerService = aliasHandlerService;
     }
+
+    public void setFilter(BloomFilter<String> filter) {
+        this.filter = filter;
+    }
 }
