@@ -2,7 +2,8 @@
 url-shortener-service
 
 # swagger-ui and api-docs
-http://localhost:9090/swagger-ui
+http://localhost:9090/swagger-ui 
+
 http://localhost:9090/api-docs
 
 
