@@ -1,8 +1,10 @@
 # url-shortener
 url-shortener-service
 
-# api-docs
+# swagger-ui and api-docs
 http://localhost:9090/swagger-ui
+http://localhost:9090/api-docs
+
 
 # Tools and Techniques
 
