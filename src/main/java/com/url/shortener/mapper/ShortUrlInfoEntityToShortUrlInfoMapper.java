@@ -15,6 +15,7 @@ public class ShortUrlInfoEntityToShortUrlInfoMapper implements Converter<ShortUr
                 .longUrl(shortUrlInfoEntity.getLongUrl())
                 .shortCode(shortUrlInfoEntity.getShortCode())
                 .ttl(shortUrlInfoEntity.getTtl())
+                .ttlUnit(shortUrlInfoEntity.getTtlUnit())
                 .build();
 
     }

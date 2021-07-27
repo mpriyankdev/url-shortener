@@ -26,4 +26,6 @@ public class AliasEntity {
     private LocalDateTime createdAt;
     @Column(name = "TTL")
     private int ttl;
+    @Column(name = "TTL_UNIT")
+    private String ttlUnit;
 }

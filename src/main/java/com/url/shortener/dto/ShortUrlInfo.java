@@ -17,5 +17,6 @@ public class ShortUrlInfo {
     private String longUrl;
     private LocalDateTime creationTime;
     private int ttl;
+    private String ttlUnit;
     private boolean isDeleted;
 }

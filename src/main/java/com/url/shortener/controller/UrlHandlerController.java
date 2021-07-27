@@ -2,11 +2,14 @@ package com.url.shortener.controller;
 
 import com.url.shortener.entity.AliasEntity;
 import com.url.shortener.entity.ShortUrlInfoEntity;
+import com.url.shortener.exception.UrlExpiredException;
 import com.url.shortener.exception.UrlNotProvidedException;
+import com.url.shortener.model.TTLUnit;
 import com.url.shortener.model.UrlShorteningInfoRequest;
 import com.url.shortener.model.UrlShorteningInfoResponse;
 import com.url.shortener.service.AliasHandlerService;
 import com.url.shortener.service.ShortenedUrlGeneratorService;
+import com.url.shortener.service.TtlCheckerService;
 import com.url.shortener.service.UrlHandlerService;
 import com.url.shortener.util.AliasExistenceCheckUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +29,9 @@ public class UrlHandlerController {
 
     @Autowired
     private AliasExistenceCheckUtil aliasExistenceCheckUtil;
+
+    @Autowired
+    private TtlCheckerService ttlCheckerService;
 
     private ShortenedUrlGeneratorService shortenedUrlGeneratorService;
     private UrlHandlerService urlHandlerService;
@@ -69,7 +75,7 @@ public class UrlHandlerController {
 
         log.info("createShortenUrl::shortenedUrl : {}", shortenedUrl);
 
-        final UrlShorteningInfoResponse response = UrlShorteningInfoResponse.builder().actualUrl(urlShorteningInfoRequest.getUrl()).createdAt(LocalDateTime.now()).shortenedUrl(shortenedUrl).validTill(LocalDateTime.MAX).optionalInfo("no optional info").build();
+        final UrlShorteningInfoResponse response = responseMapper(urlShorteningInfoRequest, shortenedUrl);
 
         return ResponseEntity.ok(response);
     }
@@ -84,6 +90,12 @@ public class UrlHandlerController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
+        ShortUrlInfoEntity shortUrlInfoEntity = urlInfoByShortCode.get();
+        if (!ttlCheckerService.isValid(shortUrlInfoEntity.getCreationTime(), TTLUnit.valueOf(shortUrlInfoEntity.getTtlUnit()), shortUrlInfoEntity.getTtl())) {
+            log.warn("redirectShortCodeToLongUrl::Requested shortCode {} is expired", shortCode);
+            throw new UrlExpiredException(String.format("Provided shortCode expired [%s] , please recreate", shortUrlInfoEntity.getShortCode()));
+        }
+
         final String longUrl = urlInfoByShortCode.get().getLongUrl();
         log.info("redirectShortCodeToLongUrl::shortCode : {} --> longUrl : {}", shortCode, longUrl);
         return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(longUrl)).build();
@@ -91,5 +103,21 @@ public class UrlHandlerController {
 
     public void setAliasExistenceCheckUtil(AliasExistenceCheckUtil aliasExistenceCheckUtil) {
         this.aliasExistenceCheckUtil = aliasExistenceCheckUtil;
+    }
+
+    public void setTtlCheckerService(TtlCheckerService ttlCheckerService) {
+        this.ttlCheckerService = ttlCheckerService;
+    }
+
+    private UrlShorteningInfoResponse responseMapper(UrlShorteningInfoRequest request, String shortenedUrl) {
+        final UrlShorteningInfoResponse response = UrlShorteningInfoResponse.builder()
+                .actualUrl(request.getUrl())
+                .createdAt(LocalDateTime.now())
+                .shortenedUrl(shortenedUrl)
+                .validTill(ttlCheckerService.validTill(LocalDateTime.now(), request.getTtlUnit(), request.getTtl()))
+                .build();
+
+
+        return response;
     }
 }

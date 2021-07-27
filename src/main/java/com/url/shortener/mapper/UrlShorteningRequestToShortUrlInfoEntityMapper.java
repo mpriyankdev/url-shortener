@@ -30,6 +30,7 @@ public class UrlShorteningRequestToShortUrlInfoEntityMapper implements Converter
                 .longUrl(urlShorteningInfoRequest.getUrl())
                 .ttl(urlShorteningInfoRequest.getTtl())
                 .isDeleted(Boolean.FALSE)
+                .ttlUnit(urlShorteningInfoRequest.getTtlUnit().name())
                 .build();
     }
 }

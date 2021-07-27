@@ -12,6 +12,7 @@ public class AliasToAliasEntityMapper implements Converter<Alias, AliasEntity> {
         return AliasEntity.builder().alias(alias.getAlias())
                 .createdAt(alias.getCreatedAt())
                 .ttl(alias.getTtl())
+                .ttlUnit(alias.getTtlUnit())
                 .build();
     }
 }

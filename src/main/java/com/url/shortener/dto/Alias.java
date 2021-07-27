@@ -16,6 +16,7 @@ public class Alias {
     private String alias;
     private LocalDateTime createdAt;
     private int ttl;
+    private String ttlUnit;
 }
 
 

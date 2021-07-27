@@ -1,6 +1,5 @@
 package com.url.shortener.exception;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,8 +11,15 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = UrlNotProvidedException.class)
-    protected ResponseEntity<Object> handle(RuntimeException ex, WebRequest request) throws JsonProcessingException {
+    protected ResponseEntity<Object> handleUrlNotProvidedException(RuntimeException ex, WebRequest request) {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+
+    @ExceptionHandler(value = UrlExpiredException.class)
+    protected ResponseEntity<Object> handleUrlExpiredException(RuntimeException ex, WebRequest request) {
+
+        return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(ex.getMessage());
+    }
+
 }

@@ -18,6 +18,7 @@ public class UrlShorteningInfoRequestToAliasMapper implements Converter<UrlShort
                 .alias(urlShorteningInfoRequest.getAlias())
                 .createdAt(LocalDateTime.now())
                 .ttl(urlShorteningInfoRequest.getTtl())
+                .ttlUnit(urlShorteningInfoRequest.getTtlUnit().name())
                 .build();
     }
 }

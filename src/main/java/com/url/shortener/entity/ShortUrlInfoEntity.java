@@ -26,6 +26,8 @@ public class ShortUrlInfoEntity {
     private LocalDateTime creationTime;
     @Column(name = "TTL")
     private int ttl;
+    @Column(name = "TTL_UNIT")
+    private String ttlUnit;
     @Column(name = "IS_DELETED")
     private boolean isDeleted;
 

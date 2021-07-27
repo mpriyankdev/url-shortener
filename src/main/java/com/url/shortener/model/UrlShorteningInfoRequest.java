@@ -14,5 +14,6 @@ public class UrlShorteningInfoRequest {
     private String url;
     private String alias;
     private int ttl;
+    private TTLUnit ttlUnit;
 
 }

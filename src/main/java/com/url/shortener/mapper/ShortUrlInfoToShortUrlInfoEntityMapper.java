@@ -14,7 +14,9 @@ public class ShortUrlInfoToShortUrlInfoEntityMapper implements Converter<ShortUr
                 .creationTime(shortUrlInfo.getCreationTime())
                 .isDeleted(shortUrlInfo.isDeleted())
                 .ttl(shortUrlInfo.getTtl())
-                .shortCode(shortUrlInfo.getShortCode()).build();
+                .shortCode(shortUrlInfo.getShortCode())
+                .ttlUnit(shortUrlInfo.getTtlUnit())
+                .build();
 
     }
 }
