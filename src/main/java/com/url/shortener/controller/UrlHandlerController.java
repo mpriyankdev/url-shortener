@@ -91,7 +91,9 @@ public class UrlHandlerController {
         }
 
         ShortUrlInfoEntity shortUrlInfoEntity = urlInfoByShortCode.get();
-        if (!ttlCheckerService.isValid(shortUrlInfoEntity.getCreationTime(), TTLUnit.valueOf(shortUrlInfoEntity.getTtlUnit()), shortUrlInfoEntity.getTtl())) {
+        String ttlUnit = shortUrlInfoEntity.getTtlUnit();
+        TTLUnit ttlUnitVal = ttlUnit != null ? TTLUnit.valueOf(ttlUnit) : null;
+        if (!ttlCheckerService.isValid(shortUrlInfoEntity.getCreationTime(), ttlUnitVal, shortUrlInfoEntity.getTtl())) {
             log.warn("redirectShortCodeToLongUrl::Requested shortCode {} is expired", shortCode);
             throw new UrlExpiredException(String.format("Provided shortCode expired [%s] , please recreate", shortUrlInfoEntity.getShortCode()));
         }

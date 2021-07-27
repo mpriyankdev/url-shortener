@@ -1,6 +1,7 @@
 package com.url.shortener.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.url.shortener.model.TTLUnit;
 import com.url.shortener.model.UrlShorteningInfoRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,7 +26,7 @@ class UrlHandlerControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    
+
     private static ObjectMapper mapper;
 
     @BeforeAll
@@ -110,6 +111,32 @@ class UrlHandlerControllerTest {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/ggl").contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    }
+
+    @Test
+    @DisplayName("Test url expired exception")
+    public void testUrlExpiredException() throws Exception {
+        UrlShorteningInfoRequest request = UrlShorteningInfoRequest.builder().url("https://google.com").ttl(-10).ttlUnit(TTLUnit.SECONDS).alias("ggl").build();
+        mockMvc.perform(MockMvcRequestBuilders.post("/shortenUrl")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsBytes(request))).andReturn();
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/ggl").contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        Assertions.assertEquals(HttpStatus.PRECONDITION_FAILED.value(), mvcResult.getResponse().getStatus());
+    }
+
+    @Test
+    @DisplayName("Test url not provided")
+    public void testUrlNotProvided() throws Exception {
+
+        UrlShorteningInfoRequest request = UrlShorteningInfoRequest.builder().ttl(-10).ttlUnit(TTLUnit.SECONDS).alias("ggl").build();
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/shortenUrl")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsBytes(request))).andReturn();
+
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+
     }
 
 

@@ -14,7 +14,9 @@ public class TtlCheckerServiceImpl implements TtlCheckerService {
 
     @Override
     public Boolean isValid(LocalDateTime startTime, TTLUnit ttlUnit, int ttl) {
-
+        if (null == ttlUnit) {
+            return true;
+        }
         String name = ttlUnit.name();
         log.info("TtlCheckerServiceImpl :: TTL is : {} {}", ttl, name);
         return addTime(startTime, ttlUnit, ttl).isAfter(LocalDateTime.now());
@@ -28,6 +30,9 @@ public class TtlCheckerServiceImpl implements TtlCheckerService {
 
     private LocalDateTime addTime(LocalDateTime startTime, TTLUnit ttlUnit, int ttl) {
 
+        if (ttlUnit == null) {
+            return LocalDateTime.MAX; //no expiry
+        }
         final String name = ttlUnit.name();
         switch (name) {
             case "DAYS":

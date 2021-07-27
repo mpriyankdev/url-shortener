@@ -11,15 +11,21 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = UrlNotProvidedException.class)
-    protected ResponseEntity<Object> handleUrlNotProvidedException(RuntimeException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleUrlNotProvidedException(UrlNotProvidedException ex, WebRequest request) {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     @ExceptionHandler(value = UrlExpiredException.class)
-    protected ResponseEntity<Object> handleUrlExpiredException(RuntimeException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleUrlExpiredException(UrlExpiredException ex, WebRequest request) {
 
         return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(value = RuntimeException.class)
+    protected ResponseEntity<Object> handleAllException(RuntimeException ex, WebRequest request) {
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
 }
