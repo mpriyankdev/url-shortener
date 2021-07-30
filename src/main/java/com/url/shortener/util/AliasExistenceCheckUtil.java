@@ -43,6 +43,11 @@ public class AliasExistenceCheckUtil {
     public Boolean checkIfAliasExists(String alias) {
         boolean isPresent = filter.mightContain(alias);
         log.info("AliasExistenceCheckUtil.checkIfAliasExists::isPresent={}", isPresent);
+        if (isPresent) {
+            // check the database once just to be sure
+            log.info("Checking the database , just to be sure for alias : {}", alias);
+            return aliasHandlerService.findAliasInfoByAliasName(alias).isPresent();
+        }
         return isPresent;
     }
 

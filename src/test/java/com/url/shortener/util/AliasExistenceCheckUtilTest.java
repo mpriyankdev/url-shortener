@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Optional;
 
 class AliasExistenceCheckUtilTest {
 
@@ -37,6 +38,7 @@ class AliasExistenceCheckUtilTest {
 
         Mockito.when(aliasHandlerService.countAliases()).thenReturn(10l);
         Mockito.when(aliasHandlerService.getAllAliases()).thenReturn(Arrays.asList(testAlias));
+        Mockito.when(aliasHandlerService.findAliasInfoByAliasName("abcd")).thenReturn(Optional.of(testAlias));
         aliasExistenceCheckUtil.setFilter(filter);
     }
 

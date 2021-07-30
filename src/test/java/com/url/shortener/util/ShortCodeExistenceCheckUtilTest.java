@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Optional;
 
 class ShortCodeExistenceCheckUtilTest {
 
@@ -37,6 +38,7 @@ class ShortCodeExistenceCheckUtilTest {
 
         Mockito.when(urlHandlerService.countShortCodes()).thenReturn(10l);
         Mockito.when(urlHandlerService.getAllShortUrlInfo()).thenReturn(Arrays.asList(testShortUrl));
+        Mockito.when(urlHandlerService.findUrlInfoByShortCode("abcd")).thenReturn(Optional.of(testShortUrl));
         shortCodeExistenceCheckUtil.setFilter(filter);
 
     }

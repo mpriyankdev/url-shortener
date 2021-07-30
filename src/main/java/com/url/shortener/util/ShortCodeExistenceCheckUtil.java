@@ -47,6 +47,11 @@ public class ShortCodeExistenceCheckUtil {
     public Boolean checkIfShortCodeExists(String shortCode) {
         boolean isPresent = filter.mightContain(shortCode);
         log.info("ShortCodeExistenceCheckUtil.checkIfShortCodeExists::isPresent={}", isPresent);
+        if (isPresent) {
+            // check the database once just to be sure
+            log.info("Checking the database , just to be sure for shortCode : {}", shortCode);
+            return urlHandlerService.findUrlInfoByShortCode(shortCode).isPresent();
+        }
         return isPresent;
     }
 
