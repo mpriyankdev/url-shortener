@@ -33,4 +33,8 @@ public class UrlShorteningRequestToShortUrlInfoEntityMapper implements Converter
                 .ttlUnit((urlShorteningInfoRequest.getTtlUnit() != null) ? urlShorteningInfoRequest.getTtlUnit().name() : null)
                 .build();
     }
+
+    public void setShortCodeGeneratorService(ShortCodeGeneratorService shortCodeGeneratorService) {
+        this.shortCodeGeneratorService = shortCodeGeneratorService;
+    }
 }

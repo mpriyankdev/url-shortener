@@ -5,12 +5,13 @@ spring:
   application:
     name: url-shortener
   datasource:
-    url: jdbc:h2:mem:url-shortener
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:mysql://mysqldb:3306/url-shortener-db?useSSL=false
+    username: root
+    password: rootpassword
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
     hibernate:
       ddl-auto: update
 

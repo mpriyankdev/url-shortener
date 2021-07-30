@@ -33,4 +33,8 @@ public class UrlShorteningRequestToShortUrlInfoMapper implements Converter<UrlSh
                 .ttlUnit(urlShorteningInfoRequest.getTtlUnit().name())
                 .build();
     }
+
+    public void setShortCodeGeneratorService(ShortCodeGeneratorService shortCodeGeneratorService) {
+        this.shortCodeGeneratorService = shortCodeGeneratorService;
+    }
 }

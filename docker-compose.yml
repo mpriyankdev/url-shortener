@@ -5,5 +5,29 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/url-shortener-db
     ports:
     - "9090:9090"
+    networks:
+      - url-shortener-mysql-network
+    depends_on:
+      - api-db
+
+  api-db:
+    container_name: mysqldb
+    build:
+      context: .
+      dockerfile: db.Dockerfile
+    networks:
+      - url-shortener-mysql-network
+    environment:
+      - MYSQL_DATABASE=url-shortener-db
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_USER=urlshortener
+      - MYSQL_PASSWORD=password
+    ports:
+    - '3306:3306'
+
+networks:
+  url-shortener-mysql-network:
