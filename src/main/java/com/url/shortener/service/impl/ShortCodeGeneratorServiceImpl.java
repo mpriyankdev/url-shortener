@@ -12,7 +12,6 @@ import java.util.UUID;
 @Service
 public class ShortCodeGeneratorServiceImpl implements ShortCodeGeneratorService {
 
-    @Autowired
     private ShortCodeExistenceCheckUtil shortCodeExistenceCheckUtil;
 
     @Override
@@ -31,6 +30,7 @@ public class ShortCodeGeneratorServiceImpl implements ShortCodeGeneratorService 
 
     }
 
+    @Autowired
     public void setShortCodeExistenceCheckUtil(ShortCodeExistenceCheckUtil shortCodeExistenceCheckUtil) {
         this.shortCodeExistenceCheckUtil = shortCodeExistenceCheckUtil;
     }

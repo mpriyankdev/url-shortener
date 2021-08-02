@@ -103,10 +103,12 @@ public class UrlHandlerController {
         return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(longUrl)).build();
     }
 
+    @Autowired
     public void setAliasExistenceCheckUtil(AliasExistenceCheckUtil aliasExistenceCheckUtil) {
         this.aliasExistenceCheckUtil = aliasExistenceCheckUtil;
     }
 
+    @Autowired
     public void setTtlCheckerService(TtlCheckerService ttlCheckerService) {
         this.ttlCheckerService = ttlCheckerService;
     }

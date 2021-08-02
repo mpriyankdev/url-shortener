@@ -15,7 +15,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class AliasHandlerServiceImpl implements AliasHandlerService {
-    @Autowired
+
     private UrlShorteningInfoRequestToAliasEntityMapper aliasEntityMapper;
 
     private AliasHandlerRepository aliasHandlerRepository;
@@ -53,6 +53,7 @@ public class AliasHandlerServiceImpl implements AliasHandlerService {
         return aliasEntityMapper.convert(request);
     }
 
+    @Autowired
     public void setAliasEntityMapper(UrlShorteningInfoRequestToAliasEntityMapper aliasEntityMapper) {
         this.aliasEntityMapper = aliasEntityMapper;
     }

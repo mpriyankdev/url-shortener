@@ -16,7 +16,6 @@ import java.util.Optional;
 @Service
 public class UrlHandlerServiceImpl implements UrlHandlerService {
 
-    @Autowired
     private UrlShorteningRequestToShortUrlInfoEntityMapper shortUrlInfoEntityMapper;
 
     private UrlHandlerRepository urlHandlerRepository;
@@ -53,6 +52,7 @@ public class UrlHandlerServiceImpl implements UrlHandlerService {
         return shortUrlInfoEntityMapper.convert(request);
     }
 
+    @Autowired
     public void setShortUrlInfoEntityMapper(UrlShorteningRequestToShortUrlInfoEntityMapper shortUrlInfoEntityMapper) {
         this.shortUrlInfoEntityMapper = shortUrlInfoEntityMapper;
     }
