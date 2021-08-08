@@ -2,6 +2,7 @@ package com.url.shortener.controller;
 
 import com.url.shortener.entity.AliasEntity;
 import com.url.shortener.entity.ShortUrlInfoEntity;
+import com.url.shortener.exception.AliasAlreadyUsedException;
 import com.url.shortener.exception.UrlExpiredException;
 import com.url.shortener.exception.UrlNotProvidedException;
 import com.url.shortener.model.TTLUnit;
@@ -27,20 +28,20 @@ import java.util.Optional;
 @Slf4j
 public class UrlHandlerController {
 
-    @Autowired
     private AliasExistenceCheckUtil aliasExistenceCheckUtil;
 
-    @Autowired
     private TtlCheckerService ttlCheckerService;
 
     private ShortenedUrlGeneratorService shortenedUrlGeneratorService;
     private UrlHandlerService urlHandlerService;
     private AliasHandlerService aliasHandlerService;
 
-    public UrlHandlerController(UrlHandlerService urlHandlerService, AliasHandlerService aliasHandlerService, ShortenedUrlGeneratorService shortenedUrlGeneratorService) {
+    public UrlHandlerController(UrlHandlerService urlHandlerService, AliasHandlerService aliasHandlerService, ShortenedUrlGeneratorService shortenedUrlGeneratorService, AliasExistenceCheckUtil aliasExistenceCheckUtil, TtlCheckerService ttlCheckerService) {
         this.urlHandlerService = urlHandlerService;
         this.aliasHandlerService = aliasHandlerService;
         this.shortenedUrlGeneratorService = shortenedUrlGeneratorService;
+        this.aliasExistenceCheckUtil = aliasExistenceCheckUtil;
+        this.ttlCheckerService = ttlCheckerService;
     }
 
     @PostMapping(value = "/shortenUrl")
@@ -60,7 +61,7 @@ public class UrlHandlerController {
                 urlShorteningInfoRequest.setAlias(savedAliasInfo.getAlias());
             } else {
                 log.warn("createShortenUrl::Alias : {} already used", alias);
-                return ResponseEntity.status(HttpStatus.IM_USED).build();
+                throw new AliasAlreadyUsedException("Alias already in use. Please provide a new alias");
             }
         } else {
             log.info("createShortenUrl::No alias provided. Hence it will be auto-generated.");
